@@ -19,20 +19,26 @@ public class User implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    @Size(min = 2, message = "Not enough, more symbols are needed")
+    private Long userId;
+    @Size(min = 2, message = "Username is too short")
     private String username;
-    @Size(min = 2 , message = "Username is too short")
+    @Size(min = 2 , message = "Not enough, more symbols are needed")
     private String password;
     @Transient
     private String passwordConfirm;
     @Email
     private String email;
 
+    private boolean active;
+
     @ElementCollection(targetClass = Role.class,fetch = FetchType.EAGER)
     @CollectionTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"))
     @Enumerated(EnumType.STRING)
     private Set<Role> roles;
+
+    @OneToMany(mappedBy = "owner",
+            cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Set<Order> orders;
 
     public User() {
     }
