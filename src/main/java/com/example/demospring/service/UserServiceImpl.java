@@ -1,52 +1,58 @@
 package com.example.demospring.service;
 
-import com.example.demospring.entity.Book;
+import com.example.demospring.entity.Role;
 import com.example.demospring.entity.User;
 import com.example.demospring.repository.BookRepo;
 import com.example.demospring.repository.UserRepo;
-import lombok.Data;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
 @Service
-@Data
-public class UserService {
+@RequiredArgsConstructor
+@Transactional
+@Slf4j
+public class UserServiceImpl implements UserService {
     private final UserRepo userRepo;
-    private final BookRepo bookRepo;
 
-    public UserService(UserRepo userRepo, BookRepo bookRepo){
-        this.userRepo = userRepo;
-        this.bookRepo = bookRepo;
-    }
 
-    public List<Book> getBooks(){
-        return bookRepo.findAll();
-    }
-    public List<User> getUsers(){
-        return userRepo.findAll();
-    }
-
-    public User addUser(User user){
-        return userRepo.save(user);
-    }
-
-    public void addNewUser(User user) {
+    @Override
+    public void saveUser(User user) {
         Optional<User> userOptional = userRepo
                 .findByEmail(user.getEmail());
         if (userOptional.isPresent()){
             throw new IllegalStateException("This email is already taken");
         }
+        log.info("Saving new user {} to database", user.getUsername());
         userRepo.save(user);
+        user.setRoles(Collections.singleton(Role.USER));
     }
 
+    @Override
+    public User getUser(String username) {
+        return userRepo.findByUsername(username);
+    }
+
+    @Override
     public void deleteUser(Long userId) {
         boolean exists = userRepo.existsById(userId);
         if(!exists){
             throw new IllegalStateException(
                     "User with id: " + userId + "doesn't exist!");
         }
+        log.info("Deleting user by id: {} from database",userId);
         userRepo.deleteById(userId);
     }
+
+
+    public List<User> getUsers(){
+        log.info("Fetching all users from database");
+        return userRepo.findAll();
+    }
+
 }
