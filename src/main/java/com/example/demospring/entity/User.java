@@ -1,5 +1,6 @@
 package com.example.demospring.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
@@ -21,10 +22,12 @@ public class User implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long userId;
     @Size(min = 2, message = "Username is too short")
+    @Column(name = "username")
     private String username;
     @Size(min = 2 , message = "Not enough, more symbols are needed")
     private String password;
     @Transient
+    @JsonIgnore
     private String passwordConfirm;
     @Email
     private String email;
@@ -51,16 +54,6 @@ public class User implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
-    }
-
-    @Override
-    public String getPassword() {
-        return null;
-    }
-
-    @Override
-    public String getUsername() {
         return null;
     }
 

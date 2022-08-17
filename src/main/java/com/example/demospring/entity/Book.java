@@ -13,13 +13,17 @@ import java.util.Set;
 @Getter
 @Setter
 public class Book {
-    private @Id @GeneratedValue(strategy = GenerationType.IDENTITY) Long bookId;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long bookId;
     @Size(min = 2, message = "Not enough, more symbols are needed")
     private String bookName;
-    @Size(min = 2 , message = "Error of naming")
+    @Size(min = 2, message = "Error of naming")
     private String author;
     @NotBlank(message = "You are really generous.But still put the price!")
     private double price;
+    @NotBlank(message = "Put correct amounts of book copies!")
+    private int amount;
     private boolean isAvailable;
 
     @OneToMany(mappedBy = "buyer",
