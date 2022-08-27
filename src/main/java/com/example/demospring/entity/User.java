@@ -24,7 +24,7 @@ public class User implements UserDetails {
     @Size(min = 2, message = "Username is too short")
     @Column(name = "username")
     private String username;
-    @Size(min = 2 , message = "Not enough, more symbols are needed")
+    @Size(min = 2, message = "Not enough, more symbols are needed")
     private String password;
     @Transient
     @JsonIgnore
@@ -34,7 +34,7 @@ public class User implements UserDetails {
 
     private boolean active;
 
-    @ElementCollection(targetClass = Role.class,fetch = FetchType.EAGER)
+    @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
     @CollectionTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"))
     @Enumerated(EnumType.STRING)
     private Set<Role> roles;

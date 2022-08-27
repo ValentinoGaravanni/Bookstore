@@ -1,7 +1,6 @@
 package com.example.demospring.service.implementation;
 
 import com.example.demospring.entity.Book;
-import com.example.demospring.entity.User;
 import com.example.demospring.entity.dto.BookDto;
 import com.example.demospring.repository.BookRepo;
 import com.example.demospring.service.BookService;
