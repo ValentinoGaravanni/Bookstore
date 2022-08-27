@@ -24,8 +24,18 @@ public class BookController {
 
     @PostMapping("/books/add")
     public ResponseEntity<Book> addBook(@RequestBody BookDto book) {
-        URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/user/save").toUriString());
+        URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/books/save").toUriString());
         return ResponseEntity.created(uri).body(bookService.addBook(book));
+    }
+
+    @PostMapping("/books/delete")
+    public ResponseEntity<Book> removeBook(@RequestBody Long book) {
+        return ResponseEntity.ok().body(bookService.deleteBook(book));
+    }
+
+    @GetMapping("/books/{bookName}")
+    public ResponseEntity<Book> findByName(@PathVariable String bookName) {
+        return ResponseEntity.ok().body(bookService.getBook(bookName));
     }
 
 }

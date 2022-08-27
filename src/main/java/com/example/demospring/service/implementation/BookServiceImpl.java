@@ -41,7 +41,7 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public void deleteBook(Long bookId) {
+    public Book deleteBook(Long bookId) {
         boolean exists = bookRepo.existsById(bookId);
         if (!exists) {
             throw new IllegalStateException(
@@ -49,7 +49,9 @@ public class BookServiceImpl implements BookService {
         }
         log.info("Deleting user by id: {} from database", bookId);
         bookRepo.deleteById(bookId);
+        return null;
     }
+
 
     @Override
     public List<Book> getBooks() {
