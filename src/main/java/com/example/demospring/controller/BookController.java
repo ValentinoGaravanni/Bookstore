@@ -28,14 +28,14 @@ public class BookController {
         return ResponseEntity.created(uri).body(bookService.addBook(book));
     }
 
-    @PostMapping("/books/delete")
-    public ResponseEntity<Book> removeBook(@RequestBody Long book) {
-        return ResponseEntity.ok().body(bookService.deleteBook(book));
+    @DeleteMapping ("/books/delete/{bookId}")
+    public ResponseEntity<Book> removeBook(@PathVariable Long bookId) {
+        return ResponseEntity.ok().body(bookService.deleteBook(bookId));
     }
 
     @GetMapping("/books/{bookName}")
-    public ResponseEntity<Book> findByName(@PathVariable String bookName) {
-        return ResponseEntity.ok().body(bookService.getBook(bookName));
+    public ResponseEntity <List<Book>> findByName(@PathVariable String bookName) {
+        return ResponseEntity.ok().body(bookService.getBooksByName(bookName));
     }
 
 }

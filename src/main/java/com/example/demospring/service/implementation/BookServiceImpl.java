@@ -9,7 +9,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Service
@@ -36,8 +35,8 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public Book getBook(String bookName) {
-        return bookRepo.findByBookName(bookName).orElseThrow(() -> new NoSuchElementException("There is no such a book"));
+    public List<Book> getBooksByName(String bookName) {
+        return bookRepo.filterBookName(bookName.toLowerCase());
     }
 
     @Override
