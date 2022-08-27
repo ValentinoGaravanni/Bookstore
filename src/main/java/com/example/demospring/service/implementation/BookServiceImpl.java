@@ -26,6 +26,7 @@ public class BookServiceImpl implements BookService {
         }
         log.info("Saving new book {} to database", bookDto.getBookName());
         Book book = new Book();
+        book.setBookName(bookDto.getBookName());
         book.setAuthor(bookDto.getAuthor());
         book.setAvailable(true);
         book.setPrice(bookDto.getPrice());
