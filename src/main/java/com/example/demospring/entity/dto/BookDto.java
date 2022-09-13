@@ -14,7 +14,7 @@ public class BookDto {
 
     public static BookDto toDto(Book book) {
         BookDto bookDto = new BookDto();
-        bookDto.setId(bookDto.getId());
+        bookDto.setId(book.getBookId());
         bookDto.setBookName(book.getBookName());
         bookDto.setAuthor(book.getAuthor());
         bookDto.setAvailable(true);
@@ -25,7 +25,7 @@ public class BookDto {
 
     public static Book fromDto(BookDto bookDto) {
         Book book = new Book();
-        book.setBookId(book.getBookId());
+        book.setBookId(bookDto.getId());
         book.setBookName(bookDto.getBookName());
         book.setAvailable(bookDto.isAvailable());
         book.setAmount(bookDto.getAmount());
