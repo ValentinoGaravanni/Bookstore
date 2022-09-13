@@ -18,7 +18,7 @@ public class BookController {
     private final BookServiceImpl bookService;
 
     @GetMapping("/books")
-    public ResponseEntity<List<Book>> getBooks() {
+    public ResponseEntity<List<BookDto>> getBooks() {
         return ResponseEntity.ok().body(bookService.getBooks());
     }
 

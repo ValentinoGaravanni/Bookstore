@@ -13,9 +13,10 @@ import javax.validation.constraints.Size;
 import java.util.Collection;
 import java.util.Set;
 
-@Entity
+
 @Getter
 @Setter
+@Entity
 @Table(name = "users")
 public class User implements UserDetails {
 
@@ -56,7 +57,7 @@ public class User implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
+        return getRoles();
     }
 
     @Override

@@ -2,6 +2,7 @@ package com.example.demospring.service.implementation;
 
 import com.example.demospring.entity.Role;
 import com.example.demospring.entity.User;
+import com.example.demospring.entity.dto.UserDto;
 import com.example.demospring.repository.UserRepo;
 import com.example.demospring.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -13,8 +14,10 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityExistsException;
 import javax.transaction.Transactional;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -39,14 +42,14 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public User saveUser(User user) {
-        userRepo.findByEmail(user.getEmail()).orElseThrow(() -> new IllegalStateException("This email is already taken"));
-        log.info("Saving new user {} to database", user.getUsername());
-        user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
-        user.setActive(true);
-        user.setRoles(Collections.singleton(Role.USER));
+    public void saveUser(final UserDto userDto) {
+        userRepo.findByEmail(userDto.getEmail()).ifPresent(dto -> {
+            throw new EntityExistsException("There is a user with such email");
+        });
+        final User user = UserDto.fromDto(userDto);
+        log.info("Saving new user {} to database", userDto.getUsername());
+        user.setPassword(bCryptPasswordEncoder.encode(userDto.getPassword()));
         userRepo.save(user);
-        return user;
     }
 
     @Override
@@ -65,9 +68,9 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         userRepo.deleteById(userId);
     }
 
-    public List<User> getUsers() {
+    public List<UserDto> getUsers() {
         log.info("Fetching all users from database");
-        return userRepo.findAll();
+        return userRepo.findAll().stream().map(UserDto::toDto).collect(Collectors.toList());
     }
 
 

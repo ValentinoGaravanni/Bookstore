@@ -8,8 +8,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityExistsException;
 import java.util.List;
-import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -19,14 +20,11 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public Book addBook(final BookDto bookDto) {
-        bookRepo.findByBookName(bookDto.getBookName()).orElseThrow(() -> new IllegalStateException("Book with such name exists"));
+        bookRepo.findByBookName(bookDto.getBookName()).ifPresent((dto) -> {
+            throw new EntityExistsException("Book with such name exists");
+        });
         log.info("Saving new book {} to database", bookDto.getBookName());
-        final Book book = new Book();
-        book.setBookName(bookDto.getBookName());
-        book.setAuthor(bookDto.getAuthor());
-        book.setAvailable(true);
-        book.setPrice(bookDto.getPrice());
-        book.setAmount(bookDto.getAmount());
+        final Book book = BookDto.fromDto(bookDto);
         bookRepo.save(book);
         return book;
     }
@@ -50,8 +48,8 @@ public class BookServiceImpl implements BookService {
 
 
     @Override
-    public List<Book> getBooks() {
+    public List<BookDto> getBooks() {
         log.info("Fetching all books from database");
-        return bookRepo.findAll();
+        return bookRepo.findAll().stream().map(BookDto::toDto).collect(Collectors.toList());
     }
 }
