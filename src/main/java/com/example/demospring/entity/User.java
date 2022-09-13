@@ -1,6 +1,7 @@
 package com.example.demospring.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
@@ -39,6 +40,7 @@ public class User implements UserDetails {
     @Enumerated(EnumType.STRING)
     private Set<Role> roles;
 
+    @JsonManagedReference
     @OneToMany(mappedBy = "owner",
             cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<Order> orders;

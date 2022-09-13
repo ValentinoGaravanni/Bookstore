@@ -1,5 +1,6 @@
 package com.example.demospring.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -26,6 +27,7 @@ public class Book {
     private int amount;
     private boolean isAvailable;
 
+    @JsonManagedReference
     @OneToMany(mappedBy = "buyer",
             cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<Order> orders;

@@ -18,14 +18,10 @@ public class BookServiceImpl implements BookService {
     private final BookRepo bookRepo;
 
     @Override
-    public Book addBook(BookDto bookDto) {
-        Optional<Book> bookOptional = bookRepo
-                .findByBookName(bookDto.getBookName());
-        if (bookOptional.isPresent()) {
-            throw new IllegalStateException("Book with such name exists");
-        }
+    public Book addBook(final BookDto bookDto) {
+        bookRepo.findByBookName(bookDto.getBookName()).orElseThrow(() -> new IllegalStateException("Book with such name exists"));
         log.info("Saving new book {} to database", bookDto.getBookName());
-        Book book = new Book();
+        final Book book = new Book();
         book.setBookName(bookDto.getBookName());
         book.setAuthor(bookDto.getAuthor());
         book.setAvailable(true);
@@ -36,13 +32,13 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public List<Book> getBooksByName(String bookName) {
+    public List<Book> getBooksByName(final String bookName) {
         return bookRepo.filterBookName(bookName.toLowerCase());
     }
 
     @Override
-    public Book deleteBook(Long bookId) {
-        boolean exists = bookRepo.existsById(bookId);
+    public Book deleteBook(final Long bookId) {
+        final boolean exists = bookRepo.existsById(bookId);
         if (!exists) {
             throw new IllegalStateException(
                     "User with id: " + bookId + "doesn't exist!");

@@ -25,8 +25,8 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     private final PasswordEncoder bCryptPasswordEncoder;
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userRepo.findByUsername(username);
+    public UserDetails loadUserByUsername(final String username) throws UsernameNotFoundException {
+        final User user = userRepo.findByUsername(username);
         if (user == null) {
             log.info("User not found in the database");
             throw new UsernameNotFoundException("User not found in the database");
@@ -40,11 +40,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Override
     public User saveUser(User user) {
-        Optional<User> userOptional = userRepo
-                .findByEmail(user.getEmail());
-        if (userOptional.isPresent()) {
-            throw new IllegalStateException("This email is already taken");
-        }
+        userRepo.findByEmail(user.getEmail()).orElseThrow(() -> new IllegalStateException("This email is already taken"));
         log.info("Saving new user {} to database", user.getUsername());
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         user.setActive(true);
@@ -54,13 +50,13 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public User getUser(String username) {
+    public User getUser(final String username) {
         return userRepo.findByUsername(username);
     }
 
     @Override
-    public void deleteUser(Long userId) {
-        boolean exists = userRepo.existsById(userId);
+    public void deleteUser(final Long userId) {
+        final boolean exists = userRepo.existsById(userId);
         if (!exists) {
             throw new IllegalStateException(
                     "User with id: " + userId + "doesn't exist!");

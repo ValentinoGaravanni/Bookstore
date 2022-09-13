@@ -1,5 +1,6 @@
 package com.example.demospring.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -17,12 +18,16 @@ public class Order {
     @Size(min = 2,message = "Not enough, more symbols are needed")
     private double TotalPrice;
 
+    @JsonBackReference
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(referencedColumnName = "bookId")
     private Book buyer;
 
+    @JsonBackReference
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(referencedColumnName = "userId")
     private User owner;
+
+
 
 }
