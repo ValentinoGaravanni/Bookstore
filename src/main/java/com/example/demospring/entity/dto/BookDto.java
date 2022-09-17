@@ -25,7 +25,6 @@ public class BookDto {
 
     public static Book fromDto(BookDto bookDto) {
         Book book = new Book();
-        book.setBookId(bookDto.getId());
         book.setBookName(bookDto.getBookName());
         book.setAvailable(bookDto.isAvailable());
         book.setAmount(bookDto.getAmount());

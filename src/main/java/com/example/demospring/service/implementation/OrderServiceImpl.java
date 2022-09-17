@@ -3,15 +3,16 @@ package com.example.demospring.service.implementation;
 import com.example.demospring.entity.Book;
 import com.example.demospring.entity.Order;
 import com.example.demospring.entity.User;
+import com.example.demospring.entity.dto.OrderDto;
 import com.example.demospring.repository.BookRepo;
 import com.example.demospring.repository.OrderRepo;
-import com.example.demospring.repository.UserRepo;
 import com.example.demospring.service.OrderService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -45,8 +46,8 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public List<Order> getOrders() {
+    public List<OrderDto> getOrders() {
         log.info("Fetching all orders lists from database");
-        return orderRepo.findAll();
+        return orderRepo.findAll().stream().map(OrderDto::toDto).collect(Collectors.toList());
     }
 }

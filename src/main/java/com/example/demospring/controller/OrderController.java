@@ -2,6 +2,7 @@ package com.example.demospring.controller;
 
 import com.example.demospring.entity.Order;
 import com.example.demospring.entity.User;
+import com.example.demospring.entity.dto.OrderDto;
 import com.example.demospring.repository.UserRepo;
 import com.example.demospring.service.OrderService;
 import lombok.RequiredArgsConstructor;
@@ -20,7 +21,7 @@ public class OrderController {
     private final UserRepo userRepo;
 
     @GetMapping("/orders")
-    public ResponseEntity<List<Order>> getBooks() {
+    public ResponseEntity<List<OrderDto>> getBooks() {
         return ResponseEntity.ok().body(orderService.getOrders());
     }
 

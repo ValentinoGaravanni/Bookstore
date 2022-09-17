@@ -4,12 +4,10 @@ import com.example.demospring.entity.Role;
 import com.example.demospring.entity.User;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import java.util.Collections;
 
 @Data
-@NoArgsConstructor
 public class UserDto {
     private Long id;
     private String username;
